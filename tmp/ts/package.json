@@ -1,0 +1,25 @@
+{
+  "name": "pentagi-taxonomy-test",
+  "version": "1.0.0",
+  "description": "Test application for importing pentagi-taxonomy v1 and v2 from GitHub",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@pentagi/taxonomy-v1": "https://gitpkg.now.sh/zavgorodnii/pentagi-taxonomy/v1/typescript?main&scripts.postinstall=npm%20install%20--ignore-scripts%20%26%26%20npm%20run%20build",
+    "@pentagi/taxonomy-v2": "https://gitpkg.now.sh/zavgorodnii/pentagi-taxonomy/v2/typescript?main&scripts.postinstall=npm%20install%20--ignore-scripts%20%26%26%20npm%20run%20build"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0"
+  }
+}
