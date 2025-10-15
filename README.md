@@ -307,6 +307,128 @@ npm install
 npm run build
 ```
 
+## TypeScript Installation with gitpkg
+
+### Why gitpkg is Required
+
+Standard npm and yarn **cannot** install packages from GitHub subdirectories. This is a limitation of npm's GitHub integration:
+
+```bash
+# ❌ Doesn't work - npm tries to install from repo root
+npm install github:yourorg/pentagi-taxonomy/v2/typescript
+
+# ❌ Doesn't work - invalid syntax
+npm install github:yourorg/pentagi-taxonomy#main:v2/typescript
+```
+
+**Solution:** [gitpkg](https://gitpkg.vercel.app/) creates virtual packages from GitHub subdirectories, enabling the monorepo structure while maintaining separate versioned TypeScript packages. Python and Go have native subdirectory support, so they don't need this workaround.
+
+### gitpkg URL Format
+
+```
+https://gitpkg.now.sh/<owner>/<repo>/<path/to/package>?<branch-or-tag>&<custom-scripts>
+```
+
+**Components:**
+- `<owner>/<repo>` - GitHub repository (e.g., `yourorg/pentagi-taxonomy`)
+- `<path/to/package>` - Subdirectory path containing `package.json` (e.g., `v2/typescript`)
+- `?<branch-or-tag>` - Git reference: branch name (`main`) or tag (`v2.1.0`)
+- `&<custom-scripts>` - Optional custom npm scripts to run after installation
+
+### Automatic Build Configuration
+
+Since gitpkg fetches source code (not compiled JavaScript), we use the `scripts.postinstall` parameter to automatically build the package after installation:
+
+```
+scripts.postinstall=npm%20install%20--ignore-scripts%20%26%26%20npm%20run%20build
+```
+
+**URL encoding:**
+- Space → `%20`
+- `&&` → `%26%26`
+
+This eliminates manual build steps - the package compiles automatically after `npm install`.
+
+### Installation Examples
+
+```bash
+# Install from main branch with automatic build
+npm install 'https://gitpkg.now.sh/yourorg/pentagi-taxonomy/v2/typescript?main&scripts.postinstall=npm%20install%20--ignore-scripts%20%26%26%20npm%20run%20build'
+
+# Install from specific tag (pinned version) with automatic build
+npm install 'https://gitpkg.now.sh/yourorg/pentagi-taxonomy/v2/typescript?v2.1.0&scripts.postinstall=npm%20install%20--ignore-scripts%20%26%26%20npm%20run%20build'
+
+# Install from feature branch with automatic build
+npm install 'https://gitpkg.now.sh/yourorg/pentagi-taxonomy/v2/typescript?feature/new-fields&scripts.postinstall=npm%20install%20--ignore-scripts%20%26%26%20npm%20run%20build'
+```
+
+### Using Multiple Versions with Aliases
+
+Add to your `package.json` with npm aliases to use multiple versions simultaneously:
+
+```json
+{
+  "dependencies": {
+    "@pentagi/taxonomy-v1": "https://gitpkg.now.sh/yourorg/pentagi-taxonomy/v1/typescript?main&scripts.postinstall=npm%20install%20--ignore-scripts%20%26%26%20npm%20run%20build",
+    "@pentagi/taxonomy-v2": "https://gitpkg.now.sh/yourorg/pentagi-taxonomy/v2/typescript?main&scripts.postinstall=npm%20install%20--ignore-scripts%20%26%26%20npm%20run%20build"
+  }
+}
+```
+
+Then import from aliased packages:
+
+```typescript
+import { TargetSchema as TargetV1 } from '@pentagi/taxonomy-v1';
+import { TargetSchema as TargetV2 } from '@pentagi/taxonomy-v2';
+
+// Handle entities by version
+function validateTarget(data: any) {
+  if (data.version === 1) {
+    return TargetV1.parse(data);
+  } else if (data.version === 2) {
+    return TargetV2.parse(data);
+  }
+  throw new Error(`Unknown version: ${data.version}`);
+}
+```
+
+### Updating Packages
+
+When the taxonomy is updated on GitHub, refresh your installation:
+
+```bash
+# Clear npm cache (gitpkg caches packages)
+npm cache clean --force
+
+# Remove node_modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
+
+The `scripts.postinstall` parameter automatically rebuilds the packages after installation.
+
+### Version Pinning Strategies
+
+**Using branches (auto-updates):**
+```json
+{
+  "@pentagi/taxonomy": "https://gitpkg.now.sh/yourorg/pentagi-taxonomy/v2/typescript?main&scripts.postinstall=npm%20install%20--ignore-scripts%20%26%26%20npm%20run%20build"
+}
+```
+- Fetches latest from `main` branch
+- Running `npm update` pulls new commits
+- **Good for:** development, always getting latest patches
+
+**Using tags (pinned):**
+```json
+{
+  "@pentagi/taxonomy": "https://gitpkg.now.sh/yourorg/pentagi-taxonomy/v2/typescript?v2.1.0&scripts.postinstall=npm%20install%20--ignore-scripts%20%26%26%20npm%20run%20build"
+}
+```
+- Fetches specific tagged version
+- Won't change until you manually update the tag
+- **Good for:** production, reproducible builds
+
 ## Version Management
 
 ### Creating a New Version
