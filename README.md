@@ -448,9 +448,6 @@ A: For minor additions, you can subclass/extend generated types. For major custo
 **Q: What if I need a new field type?**
 A: Edit `codegen/shared/validator.py` to add the type, then update all language generators and templates.
 
-**Q: Can I use this for other domains (not pentesting)?**
-A: Absolutely! The framework is domain-agnostic. Just modify the entity definitions for your use case.
-
 ---
 
 For questions or issues, please open a GitHub issue or contact the maintainers.
