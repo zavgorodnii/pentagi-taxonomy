@@ -10,7 +10,7 @@ export const TargetSchema = z.object({
   // Taxonomy schema version (auto-injected by Graphiti fork)
   version: z.number().int().optional(),
   // Unique identifier
-  uuid: z.string().optional(),
+  entity_uuid: z.string().optional(),
   // DNS hostname if known
   hostname: z.string().optional(),
   // IP address of the target
@@ -32,7 +32,7 @@ export const PortSchema = z.object({
   // Taxonomy schema version (auto-injected by Graphiti fork)
   version: z.number().int().optional(),
   // Unique identifier
-  uuid: z.string().optional(),
+  entity_uuid: z.string().optional(),
   // Port number
   port_number: z.number().int().min(1).max(65535).optional(),
   // Network protocol
@@ -50,7 +50,7 @@ export const VulnerabilitySchema = z.object({
   // Taxonomy schema version (auto-injected by Graphiti fork)
   version: z.number().int().optional(),
   // Unique identifier
-  uuid: z.string().optional(),
+  entity_uuid: z.string().optional(),
   // Custom vulnerability identifier
   vuln_id: z.string().optional(),
   // Vulnerability title

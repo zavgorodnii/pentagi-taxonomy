@@ -8,7 +8,7 @@ nodes:
       version:
         type: int
         description: "Taxonomy schema version (auto-injected by Graphiti fork)"
-      uuid:
+      entity_uuid:
         type: string
         description: "Unique identifier"
       hostname:
@@ -41,7 +41,7 @@ nodes:
       version:
         type: int
         description: "Taxonomy schema version (auto-injected by Graphiti fork)"
-      uuid:
+      entity_uuid:
         type: string
         description: "Unique identifier"
       port_number:
@@ -67,7 +67,7 @@ nodes:
       version:
         type: int
         description: "Taxonomy schema version (auto-injected by Graphiti fork)"
-      uuid:
+      entity_uuid:
         type: string
         description: "Unique identifier"
       vuln_id:

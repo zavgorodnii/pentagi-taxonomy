@@ -6,7 +6,7 @@ package entities
 // Target A target system being assessed during penetration testing
 type Target struct {
 	Version *int `json:"version,omitempty"` // Taxonomy schema version (auto-injected by Graphiti fork)
-	Uuid *string `json:"uuid,omitempty"` // Unique identifier
+	EntityUuid *string `json:"entity_uuid,omitempty"` // Unique identifier
 	Hostname *string `json:"hostname,omitempty"` // DNS hostname if known
 	IpAddress *string `json:"ip_address,omitempty" validate:"omitempty,ipv4"` // IP address of the target
 	TargetType *string `json:"target_type,omitempty" validate:"omitempty,oneof=host web_service api"` // Classification of target
@@ -17,7 +17,7 @@ type Target struct {
 // Port A network port on a target system
 type Port struct {
 	Version *int `json:"version,omitempty"` // Taxonomy schema version (auto-injected by Graphiti fork)
-	Uuid *string `json:"uuid,omitempty"` // Unique identifier
+	EntityUuid *string `json:"entity_uuid,omitempty"` // Unique identifier
 	PortNumber *int `json:"port_number,omitempty" validate:"omitempty,min=1,max=65535"` // Port number
 	Protocol *string `json:"protocol,omitempty" validate:"omitempty,oneof=tcp udp"` // Network protocol
 	State *string `json:"state,omitempty" validate:"omitempty,oneof=open closed filtered"` // Port state

@@ -9,7 +9,7 @@ from typing import Literal
 class Target(BaseModel):
     """A target system being assessed during penetration testing"""
     version: int | None = Field(None, description='Taxonomy schema version (auto-injected by Graphiti fork)')
-    uuid: str | None = Field(None, description='Unique identifier')
+    entity_uuid: str | None = Field(None, description='Unique identifier')
     hostname: str | None = Field(None, description='DNS hostname if known')
     ip_address: str | None = Field(None, description='IP address of the target')
     target_type: Literal['host', 'web_service', 'api', 'domain'] | None = Field(None, description='Classification of target')
@@ -20,7 +20,7 @@ class Target(BaseModel):
 class Port(BaseModel):
     """A network port on a target system"""
     version: int | None = Field(None, description='Taxonomy schema version (auto-injected by Graphiti fork)')
-    uuid: str | None = Field(None, description='Unique identifier')
+    entity_uuid: str | None = Field(None, description='Unique identifier')
     port_number: int | None = Field(None, description='Port number', ge=1, le=65535)
     protocol: Literal['tcp', 'udp'] | None = Field(None, description='Network protocol')
     state: Literal['open', 'closed', 'filtered'] | None = Field(None, description='Port state')
@@ -29,7 +29,7 @@ class Port(BaseModel):
 class Vulnerability(BaseModel):
     """A security vulnerability identified during assessment"""
     version: int | None = Field(None, description='Taxonomy schema version (auto-injected by Graphiti fork)')
-    uuid: str | None = Field(None, description='Unique identifier')
+    entity_uuid: str | None = Field(None, description='Unique identifier')
     vuln_id: str | None = Field(None, description='Custom vulnerability identifier')
     title: str | None = Field(None, description='Vulnerability title')
     severity: Literal['critical', 'high', 'medium', 'low', 'info'] | None = Field(None, description='Severity classification')

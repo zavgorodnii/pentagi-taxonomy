@@ -1,4 +1,4 @@
-module github.com/zavgorodnii/pentagi-taxonomy/v1/go
+module github.com/yourorg/pentagi-taxonomy/v1/go
 
 go 1.21
 
